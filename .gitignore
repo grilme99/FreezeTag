@@ -1,0 +1,46 @@
+# Roblox
+/*.rbxl
+/*.rbxl.lock
+/*.rbxlx
+/*.rbxlx.lock
+/*.rbxm
+/*.rbxmx
+/*.sig
+roblox.toml
+
+# dependencies
+Packages/
+DevPackages/
+.DS_Store
+debug.log
+
+# Build files
+out/
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/launch.sample.json
+
+# misc
+/luacov.*
+/lcov*
+/site
+/output.txt
+.vscode/launch.json
+cachegrind.out.*
+callgrind.out.*
+globalTypes.d.lua
+sourcemap.json

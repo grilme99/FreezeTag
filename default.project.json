@@ -1,0 +1,37 @@
+{
+  "name": "Hunt",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "Packages": {
+        "$path": "Packages/"
+      },
+      "DevPackages": {
+        "$path": "DevPackages/"
+      },
+      "Client": {
+        "$path": "src/Client"
+      },
+      "Shared": {
+        "$path": "src/Shared"
+      }
+    },
+    "ServerScriptService": {
+      "ServerRuntime": {
+        "$path": "src/Bin/Runtime.server.lua"
+      }
+    },
+    "ServerStorage": {
+      "Server": {
+        "$path": "src/Server"
+      }
+    },
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "ClientRuntime": {
+          "$path": "src/Bin/Runtime.client.lua"
+        }
+      }
+    }
+  }
+}

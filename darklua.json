@@ -1,0 +1,44 @@
+{
+    "process": [
+        {
+            "rule": "inject_global_value",
+            "identifier": "__DEV__",
+            "value": true
+        },
+        {
+            "rule": "inject_global_value",
+            "identifier": "__PROFILE__",
+            "value": true
+        },
+        {
+            "rule": "inject_global_value",
+            "identifier": "__YOLO__",
+            "value": false
+        },
+        {
+            "rule": "convert_require",
+            "current": {
+                "name": "path",
+                "sources": {
+                    "@Packages": "Packages/",
+                    "@DevPackages": "DevPackages/",
+                    "@Client": "src/Client/",
+                    "@Server": "src/Server/",
+                    "@Shared": "src/Shared/",
+                    "@Types": "src/Shared/Types"
+                }
+            },
+            "target": {
+                "name": "roblox",
+                "rojo_sourcemap": "./sourcemap.json",
+                "indexing_style": "property"
+            }
+        },
+        "compute_expression",
+        "filter_after_early_return",
+        "remove_nil_declaration",
+        "remove_unused_while",
+        "remove_unused_if_branch",
+        "remove_empty_do"
+    ]
+}

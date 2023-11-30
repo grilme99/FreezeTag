@@ -1,0 +1,66 @@
+{
+  "name": "Hunt",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "Packages": {
+        "$path": "Packages/"
+      },
+      "DevPackages": {
+        "$path": "DevPackages/"
+      },
+      "Client": {
+        "$path": "out/Client"
+      },
+      "Shared": {
+        "$path": "out/Shared"
+      }
+    },
+    "ServerScriptService": {
+      "ServerRuntime": {
+        "$path": "out/Bin/Runtime.server.lua"
+      }
+    },
+    "ServerStorage": {
+      "Server": {
+        "$path": "out/Server"
+      }
+    },
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "ClientRuntime": {
+          "$path": "out/Bin/Runtime.client.lua"
+        }
+      }
+    },
+    "Players": {
+      "$properties": {
+        "CharacterAutoLoads": false
+      }
+    },
+    "Workspace": {
+      "$ignoreUnknownInstances": true,
+      "$properties": {
+        "FilteringEnabled": true
+      }
+    },
+    "Lighting": {
+      "$properties": {
+        "Ambient": [
+          0,
+          0,
+          0
+        ],
+        "Brightness": 2,
+        "GlobalShadows": true,
+        "Outlines": false,
+        "Technology": "Voxel"
+      }
+    },
+    "SoundService": {
+      "$properties": {
+        "RespectFilteringEnabled": true
+      }
+    }
+  }
+}
