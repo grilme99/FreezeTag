@@ -48,6 +48,16 @@ function FreezeTagPlayer.LoadCharacterAsync(self: FreezeTagPlayer, options: Load
 
 	local character = Character.new(characterModel)
 
+	task.delay(3, function()
+		print("Freezing")
+		character:Freeze()
+
+		wait(3)
+
+		print("Unfreezing")
+		character:Unfreeze()
+	end)
+
 	-- At this point, loading the new character was a success so we should
 	-- destroy the old character if it exists.
 	if self.character then

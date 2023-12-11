@@ -1,9 +1,12 @@
 local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Component = require("@Packages/Component")
 local Log = require("@Packages/Log").new()
 
 local Tags = require("@Enums/Tags")
+
+local IceCubeTemplate = ReplicatedStorage.Assets.Models.IceCube
 
 local PlayerCharacter = Component.new({
 	Tag = Tags.PlayerCharacter,
@@ -13,7 +16,6 @@ local PlayerCharacter = Component.new({
 function PlayerCharacter:Construct()
 	local character = self.Instance :: Model
 	local humanoid: Humanoid = character:WaitForChild("Humanoid")
-	local rootPart: BasePart = character:WaitForChild("HumanoidRootPart")
 
 	local isLocalCharacter = character == Players.LocalPlayer.Character
 
@@ -43,15 +45,11 @@ function PlayerCharacter:Construct()
 
 		-- Apply visual frozen effect
 		if isFrozen then
-			local iceBlock = Instance.new("Part")
-			iceBlock.Name = "IceBlock"
-			iceBlock.Size = Vector3.new(6, 10, 6)
-			iceBlock.Color = Color3.fromRGB(0, 162, 255)
-			iceBlock.Transparency = 0.3
-			iceBlock.Material = Enum.Material.Ice
+			local characterCf = character:GetBoundingBox()
+
+			local iceBlock = IceCubeTemplate:Clone()
+			iceBlock.CFrame = characterCf
 			iceBlock.Anchored = true
-			iceBlock.CanCollide = false
-			iceBlock.Position = rootPart.Position
 			iceBlock.Parent = character
 
 			self.iceBlock = iceBlock

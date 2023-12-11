@@ -17,8 +17,8 @@
       },
       "Assets": {
         "$className": "Folder",
-        "Lobby": {
-          "$path": "Assets/Lobby.rbxm"
+        "Models": {
+          "$path": "Assets/Models"
         },
         "Maps": {
           "$path": "Assets/Maps"

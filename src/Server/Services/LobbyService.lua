@@ -5,7 +5,7 @@ local Workspace = game:GetService("Workspace")
 local RandomUtils = require("@Utils/RandomUtils")
 local Tags = require("@Enums/Tags")
 
-local LobbyTemplate = ReplicatedStorage.Assets.Lobby
+local LobbyTemplate = ReplicatedStorage.Assets.Models.Lobby
 
 local LobbyService = {}
 local LobbyRng = Random.new()
