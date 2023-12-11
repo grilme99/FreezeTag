@@ -5,7 +5,7 @@ start: build
 
 serve:
     just process
-    rojo serve build.project.json & watchexec -w src/ -s SIGINT -- just process
+    rojo serve build.project.json & darklua process --config darklua.json --watch src/ out/
 
 build: process
     rojo build build.project.json --output FreezeTag.rbxl

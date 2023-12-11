@@ -9,9 +9,14 @@
     "@DevPackages": "DevPackages/",
 
     "@Client": "src/Client/",
+    "@Controllers": "src/Client/Controllers",
     "@Server": "src/Server/",
+    "@Services": "src/Server/Services",
 
     "@Shared": "src/Shared/",
-    "@Types": "src/Shared/Types"
+    "@Types": "src/Shared/Types",
+    "@Enums": "src/Shared/Enums",
+    "@Meta": "src/Shared/Meta",
+    "@Utils": "src/Shared/Utils"
   }
 }
