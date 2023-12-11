@@ -1,12 +1,19 @@
 local Players = game:GetService("Players")
+
 local Log = require("@Packages/Log").new()
+local Signal = require("@Packages/Signal")
+
+local PermissionService = require("@Services/PermissionService")
 
 local FreezeTagPlayer = require("@Server/Classes/Player")
-type FreezeTagPlayer = FreezeTagPlayer.FreezeTagPlayer
+export type FreezeTagPlayer = FreezeTagPlayer.FreezeTagPlayer
 
+type Array<T> = { T }
 type Map<K, V> = { [K]: V }
 
 local PlayerService = {}
+PlayerService.OnPlayerAdded = Signal.new() :: Signal.Signal<FreezeTagPlayer>
+
 local PlayerClasses = {} :: Map<Player, FreezeTagPlayer>
 
 local function OnPlayerAdded(player: Player)
@@ -45,6 +52,12 @@ local function OnPlayerAdded(player: Player)
 	end
 
 	task.spawn(loadCharacter)
+
+	if PermissionService.IsPlayerDeveloper(player) then
+		player:SetAttribute("IsDeveloper", true)
+	end
+
+	PlayerService.OnPlayerAdded:Fire(freezeTagPlayer)
 end
 
 local function OnPlayerRemoving(player: Player)
@@ -59,6 +72,18 @@ end
 function PlayerService.OnInit()
 	Players.PlayerAdded:Connect(OnPlayerAdded)
 	Players.PlayerRemoving:Connect(OnPlayerRemoving)
+end
+
+--- Returns an array of all players who have been allocated a FreezeTagPlayer
+--- class.
+function PlayerService.GetPlayers(): Array<FreezeTagPlayer>
+	local players = {} :: Array<FreezeTagPlayer>
+
+	for _, playerClass in PlayerClasses do
+		table.insert(players, playerClass)
+	end
+
+	return players
 end
 
 --- Returns the FreezeTagPlayer class for the given player. This function will

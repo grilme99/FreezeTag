@@ -19,8 +19,8 @@ function RoundService.OnStart()
 end
 
 function RoundService.TransitionStage(newRoundClass: "Intermission" | "RunningGame")
-	local class = if newRoundClass == "Intermission" then Intermission else RunningGame
-	local newRound = class.new(RoundService.TransitionStage)
+	local roundClass = if newRoundClass == "Intermission" then Intermission else RunningGame
+	local newRound = roundClass.new(RoundService.TransitionStage)
 
 	Log:AtInfo():Log(`Transitioning to new round stage: {newRound.debugName}`)
 
