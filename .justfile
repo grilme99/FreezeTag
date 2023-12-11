@@ -19,6 +19,7 @@ install-packages:
 
     just sourcemap
     wally-package-types --sourcemap sourcemap.json Packages/
+    wally-package-types --sourcemap sourcemap.json ServerPackages/
     wally-package-types --sourcemap sourcemap.json DevPackages/
 
     echo "local REQUIRED_MODULE = require(script.Parent.Parent[\"jsdotlua_jest-message-util@3.4.1\"][\"jest-message-util\"])\nreturn REQUIRED_MODULE" > DevPackages/_Index/jsdotlua_jest-reporters@3.4.1/JestMessageUtil.lua
