@@ -31,6 +31,9 @@
       }
     },
     "ServerStorage": {
+      "ServerPackages": {
+        "$path": "ServerPackages/"
+      },
       "Server": {
         "$path": "out/Server"
       },

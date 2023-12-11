@@ -10,6 +10,7 @@ roblox.toml
 
 # dependencies
 Packages/
+ServerPackages/
 DevPackages/
 .DS_Store
 debug.log

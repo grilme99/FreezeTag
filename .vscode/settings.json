@@ -6,6 +6,7 @@
   "luau-lsp.completion.imports.separateGroupsWithLine": true,
   "luau-lsp.require.directoryAliases": {
     "@Packages": "Packages/",
+    "@ServerPackages": "ServerPackages/",
     "@DevPackages": "DevPackages/",
 
     "@Client": "src/Client/",

@@ -21,6 +21,7 @@
                 "name": "path",
                 "sources": {
                     "@Packages": "Packages/",
+                    "@ServerPackages": "ServerPackages/",
                     "@DevPackages": "DevPackages/",
                     "@Client": "src/Client/",
                     "@Controllers": "src/Client/Controllers",
