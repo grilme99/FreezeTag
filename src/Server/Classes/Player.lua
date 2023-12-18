@@ -1,8 +1,12 @@
-local LobbyService = require("@Services/LobbyService")
-local RoundService = require("@Services/RoundService")
+local Trove = require("@Packages/Trove")
 
 local Character = require("./Character")
 type Character = Character.Character
+
+local LobbyService
+local RoundService
+
+local DEFAULT_CHARACTER_HEIGHT = 5
 
 local FreezeTagPlayer = {}
 FreezeTagPlayer.__index = FreezeTagPlayer
@@ -10,8 +14,21 @@ FreezeTagPlayer.__index = FreezeTagPlayer
 function FreezeTagPlayer.new(player: Player)
 	local self = setmetatable({}, FreezeTagPlayer)
 
+	self.trove = Trove.new()
+
 	self.player = player
 	self.character = nil :: Character?
+
+	self.currentCharacterLocation = nil :: "lobby" | "game" | nil
+
+	-- Note: We don't load the services at the top of the file because it would
+	-- create a circular dependency.
+	if LobbyService == nil then
+		LobbyService = require("@Services/LobbyService")
+	end
+	if RoundService == nil then
+		RoundService = require("@Services/RoundService")
+	end
 
 	return self
 end
@@ -48,15 +65,9 @@ function FreezeTagPlayer.LoadCharacterAsync(self: FreezeTagPlayer, options: Load
 
 	local character = Character.new(characterModel)
 
-	task.delay(3, function()
-		print("Freezing")
-		character:Freeze()
-
-		wait(3)
-
-		print("Unfreezing")
-		character:Unfreeze()
-	end)
+	-- Normalize the character in a new thread. This will likely yield as it
+	-- waits for the character parts to load in.
+	task.spawn(character.NormalizeHeightAsync, character, DEFAULT_CHARACTER_HEIGHT)
 
 	-- At this point, loading the new character was a success so we should
 	-- destroy the old character if it exists.
@@ -65,11 +76,21 @@ function FreezeTagPlayer.LoadCharacterAsync(self: FreezeTagPlayer, options: Load
 	end
 
 	self.character = character
+	self.currentCharacterLocation = options.destination
+
+	local connection
+	connection = character.destroying:Connect(function()
+		connection:Destroy()
+		self.character = nil
+		self.currentCharacterLocation = nil
+	end)
+	self.trove:Add(connection)
 
 	return character
 end
 
 function FreezeTagPlayer.Destroy(self: FreezeTagPlayer)
+	self.trove:Clean()
 	if self.character then
 		self.character:Destroy()
 	end

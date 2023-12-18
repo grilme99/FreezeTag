@@ -15,6 +15,7 @@ Loader = "sleitnick/loader@2.0.0"
 Log = "sleitnick/log@0.1.1"
 Signal = "sleitnick/signal@2.0.1"
 Component = "sleitnick/component@2.4.8"
+Trove = "sleitnick/trove@1.1.0"
 
 [server-dependencies]
 Cmdr = "evaera/cmdr@1.9.0"

@@ -2,6 +2,9 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Maps = ReplicatedStorage.Assets.Maps
 
+local MapName = require("@Enums/MapName")
+type MapName = MapName.MapName
+
 export type MapEntry = {
 	--- Programmatic name of the map.
 	--- WARNING: This is not displayed to clients directly! Map names are
@@ -16,9 +19,9 @@ export type MapEntry = {
 
 type Map<K, V> = { [K]: V }
 
-local MapMeta: Map<string, MapEntry> = {}
+local MapMeta: Map<MapName, MapEntry> = {}
 
-MapMeta.Crossroads = {
+MapMeta[MapName.Crossroads] = {
 	mapName = "crossroads",
 	debugName = "Crossroads",
 	mapRef = Maps.Crossroads,

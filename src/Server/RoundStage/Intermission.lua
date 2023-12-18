@@ -3,15 +3,17 @@ local Workspace = game:GetService("Workspace")
 local Log = require("@Packages/Log").new()
 
 local LobbyService = require("@Services/LobbyService")
+local PlayerService = require("@Services/PlayerService")
 
 local Duration = require("@Shared/Utils/Duration")
+local MapName = require("@Enums/MapName")
 
 local Types = require("./Types")
 type RoundStageStatics = Types.RoundStageStatics
 type RoundStage = Types.RoundStage
 type Transition = Types.Transition
 
-local INTERMISSION_LENGTH = Duration.fromSecs(5)
+local INTERMISSION_LENGTH = Duration.fromSecs(10)
 
 local Intermission = {}
 Intermission.__index = Intermission
@@ -29,6 +31,19 @@ function Intermission.new(transition: Transition)
 	Workspace:SetAttribute("RoundStage", self.debugName)
 	Workspace:SetAttribute("IntermissionEndTime", self.startedAt + INTERMISSION_LENGTH:asSecs())
 
+	task.delay(2, function()
+		Log:AtDebug():Log("Spawning players into the lobby")
+		for _, player in PlayerService.GetPlayers() do
+			if player.currentCharacterLocation == "lobby" then
+				continue
+			end
+
+			player:LoadCharacterAsync({
+				destination = "lobby",
+			})
+		end
+	end)
+
 	return self
 end
 
@@ -43,6 +58,10 @@ function Intermission.OnTick(self: Intermission)
 	end
 
 	Log:AtInfo():Log("Intermission over, transitioning to next round")
+
+	local chosenMap = MapName.Crossroads
+	workspace:SetAttribute("ChosenMap", chosenMap)
+
 	self.transition("RunningGame")
 end
 
