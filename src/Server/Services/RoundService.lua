@@ -1,5 +1,8 @@
 local RunService = game:GetService("RunService")
+
 local Log = require("@Packages/Log").new()
+local Signal = require("@Packages/Signal")
+type Signal<T...> = Signal.Signal<T...>
 
 local LobbyService = require("@Services/LobbyService")
 
@@ -12,6 +15,7 @@ local CachedRunningGame
 
 local RoundService = {}
 RoundService.CurrentRoundStage = nil :: RoundStage?
+RoundService.OnRoundStageChanged = Signal.new() :: Signal<"Intermission" | "RunningGame">
 
 function RoundService.OnStart()
 	RunService.Heartbeat:Connect(RoundService.Tick)

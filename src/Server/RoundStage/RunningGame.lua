@@ -3,8 +3,6 @@ local Workspace = game:GetService("Workspace")
 
 local Log = require("@Packages/Log").new()
 
-local PlayerService = require("@Services/PlayerService")
-
 local Duration = require("@Utils/Duration")
 local RandomUtils = require("@Utils/RandomUtils")
 
@@ -19,7 +17,7 @@ type RoundStageStatics = Types.RoundStageStatics
 type RoundStage = Types.RoundStage
 type Transition = Types.Transition
 
-local GAME_LENGTH = Duration.fromSecs(5)
+local GAME_LENGTH = Duration.fromSecs(120)
 
 local RunningGame = {}
 RunningGame.__index = RunningGame
@@ -50,17 +48,6 @@ function RunningGame.new(transition: Transition)
 	Workspace:SetAttribute("RoundName", self.roundName)
 	Workspace:SetAttribute("RoundStage", self.debugName)
 	Workspace:SetAttribute("GameEndTime", self.startedAt + GAME_LENGTH:asSecs())
-
-	-- This is quite ugly, but we give players a few seconds before spawning so
-	-- they have a chance to load the map.
-	task.delay(2, function()
-		Log:AtDebug():Log("Spawning players into the game")
-		for _, player in PlayerService.GetPlayers() do
-			player:LoadCharacterAsync({
-				destination = "game",
-			})
-		end
-	end)
 
 	return self
 end

@@ -1,5 +1,3 @@
-local Trove = require("@Packages/Trove")
-
 local Character = require("./Character")
 type Character = Character.Character
 
@@ -13,8 +11,6 @@ FreezeTagPlayer.__index = FreezeTagPlayer
 
 function FreezeTagPlayer.new(player: Player)
 	local self = setmetatable({}, FreezeTagPlayer)
-
-	self.trove = Trove.new()
 
 	self.player = player
 	self.character = nil :: Character?
@@ -84,13 +80,11 @@ function FreezeTagPlayer.LoadCharacterAsync(self: FreezeTagPlayer, options: Load
 		self.character = nil
 		self.currentCharacterLocation = nil
 	end)
-	self.trove:Add(connection)
 
 	return character
 end
 
 function FreezeTagPlayer.Destroy(self: FreezeTagPlayer)
-	self.trove:Clean()
 	if self.character then
 		self.character:Destroy()
 	end

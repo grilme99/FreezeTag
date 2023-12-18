@@ -3,7 +3,6 @@ local Workspace = game:GetService("Workspace")
 local Log = require("@Packages/Log").new()
 
 local LobbyService = require("@Services/LobbyService")
-local PlayerService = require("@Services/PlayerService")
 
 local Duration = require("@Shared/Utils/Duration")
 local MapName = require("@Enums/MapName")
@@ -13,7 +12,7 @@ type RoundStageStatics = Types.RoundStageStatics
 type RoundStage = Types.RoundStage
 type Transition = Types.Transition
 
-local INTERMISSION_LENGTH = Duration.fromSecs(10)
+local INTERMISSION_LENGTH = Duration.fromSecs(45)
 
 local Intermission = {}
 Intermission.__index = Intermission
@@ -30,19 +29,6 @@ function Intermission.new(transition: Transition)
 	Workspace:SetAttribute("RoundName", self.roundName)
 	Workspace:SetAttribute("RoundStage", self.debugName)
 	Workspace:SetAttribute("IntermissionEndTime", self.startedAt + INTERMISSION_LENGTH:asSecs())
-
-	task.delay(2, function()
-		Log:AtDebug():Log("Spawning players into the lobby")
-		for _, player in PlayerService.GetPlayers() do
-			if player.currentCharacterLocation == "lobby" then
-				continue
-			end
-
-			player:LoadCharacterAsync({
-				destination = "lobby",
-			})
-		end
-	end)
 
 	return self
 end

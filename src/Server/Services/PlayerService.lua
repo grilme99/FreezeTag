@@ -4,6 +4,7 @@ local Log = require("@Packages/Log").new()
 local Signal = require("@Packages/Signal")
 
 local PermissionService = require("@Services/PermissionService")
+local RoundService = require("@Services/RoundService")
 
 local FreezeTagPlayer = require("@Server/Classes/Player")
 export type FreezeTagPlayer = FreezeTagPlayer.FreezeTagPlayer
@@ -72,6 +73,23 @@ end
 function PlayerService.OnInit()
 	Players.PlayerAdded:Connect(OnPlayerAdded)
 	Players.PlayerRemoving:Connect(OnPlayerRemoving)
+end
+
+function PlayerService.OnStart()
+	-- Respawn players when the round stage changes
+	RoundService.OnRoundStageChanged:Connect(function(newRoundStage)
+		task.wait(1)
+
+		for _, playerClass in pairs(PlayerClasses) do
+			if newRoundStage == "Intermission" and playerClass.currentCharacterLocation == "lobby" then
+				continue
+			end
+
+			playerClass:LoadCharacterAsync({
+				destination = if newRoundStage == "Intermission" then "lobby" else "game",
+			})
+		end
+	end)
 end
 
 --- Returns an array of all players who have been allocated a FreezeTagPlayer
