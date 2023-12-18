@@ -6,12 +6,12 @@ type Signal<T...> = Signal.Signal<T...>
 
 local LobbyService = require("@Services/LobbyService")
 
+local Intermission = require("@Server/RoundStage/Intermission")
+local RunningGame = require("@Server/RoundStage/RunningGame")
+
 local RoundStageTypes = require("@Server/RoundStage/Types")
 type RoundStageStatics = RoundStageTypes.RoundStageStatics
 type RoundStage = RoundStageTypes.RoundStage
-
-local CachedIntermission
-local CachedRunningGame
 
 local RoundService = {}
 RoundService.CurrentRoundStage = nil :: RoundStage?
@@ -23,17 +23,6 @@ function RoundService.OnStart()
 end
 
 function RoundService.TransitionStage(newRoundClass: "Intermission" | "RunningGame")
-	-- Note: We use require() here to avoid circular dependencies.
-	if not CachedIntermission then
-		CachedIntermission = require("@Server/RoundStage/Intermission")
-	end
-	if not CachedRunningGame then
-		CachedRunningGame = require("@Server/RoundStage/RunningGame")
-	end
-
-	local Intermission = CachedIntermission
-	local RunningGame = CachedRunningGame
-
 	local roundClass = if newRoundClass == "Intermission" then Intermission else RunningGame
 	local newRound = roundClass.new(RoundService.TransitionStage)
 
