@@ -23,6 +23,7 @@ type RoundStage = Types.RoundStage
 type Transition = Types.Transition
 
 local GAME_LENGTH = Duration.fromSecs(120)
+local HIDE_TIME = Duration.fromSecs(15)
 
 local RunningGame = {}
 RunningGame.__index = RunningGame
@@ -69,6 +70,9 @@ function RunningGame.new(transition: Transition)
 	self.transition = transition
 	self.startedAt = os.time()
 
+	self.taggersReleasedAt = self.startedAt + HIDE_TIME:asSecs()
+	self.taggersReleased = false
+
 	self.roundName = "running_game"
 	self.debugName = "Running Game"
 
@@ -88,12 +92,10 @@ function RunningGame.new(transition: Transition)
 	local chosenMap: MapName = LobbyService.GetChosenMap()
 	local mapData = assert(MapMeta[chosenMap], `Map data for map "{chosenMap}" not found`)
 
-	-- Note: We don't clone the map instance to save memory on the server and
-	-- clients. This means that the map instance can be modified in-place, which
-	-- is a risk. Any changes made to the map during a round will persist into
-	-- the later rounds.
-	self.mapObj = assert(ServerStorage.Assets.Maps:FindFirstChild(mapData.mapName), `Map "{mapData.mapName}" not found`)
+	local mapRef =
+		assert(ServerStorage.Assets.Maps:FindFirstChild(mapData.mapName), `Map "{mapData.mapName}" not found`)
 
+	self.mapObj = mapRef:Clone()
 	self.mapObj.Parent = workspace
 
 	-- Cache match spawns now so that we don't have to make expensive queries
@@ -103,6 +105,7 @@ function RunningGame.new(transition: Transition)
 
 	Workspace:SetAttribute("RoundName", self.roundName)
 	Workspace:SetAttribute("RoundStage", self.debugName)
+	Workspace:SetAttribute("TaggersReleasedAt", self.taggersReleasedAt)
 	Workspace:SetAttribute("GameEndTime", self.startedAt + GAME_LENGTH:asSecs())
 
 	return self
@@ -113,6 +116,18 @@ export type RunningGame = RoundStage & typeof(RunningGame.new(...))
 function RunningGame.OnTick(self: RunningGame)
 	local now = os.time()
 	local elapsedTime = now - self.startedAt
+
+	-- Release seekers if they haven't been released yet
+	if not self.taggersReleased and now >= self.taggersReleasedAt then
+		self.taggersReleased = true
+
+		Log:AtInfo():Log("Releasing taggers from tagger spawn")
+
+		local seekerDoor = self.mapObj:FindFirstChild("TaggerDoor")
+		if seekerDoor then
+			seekerDoor:Destroy()
+		end
+	end
 
 	if elapsedTime < GAME_LENGTH:asSecs() then
 		return
@@ -142,13 +157,14 @@ end
 function RunningGame.Destroy(self: RunningGame)
 	Workspace:SetAttribute("RoundName", nil)
 	Workspace:SetAttribute("RoundStage", nil)
+	Workspace:SetAttribute("TaggersReleasedAt", nil)
 	Workspace:SetAttribute("GameEndTime", nil)
 
 	TeamService.ResetTeams()
 
 	-- Give all players a chance to teleport back to the lobby
-	task.delay(5, function()
-		self.mapObj.Parent = ServerStorage.Assets.Maps
+	task.delay(3, function()
+		self.mapObj:Destroy()
 	end)
 end
 
