@@ -79,7 +79,7 @@
         "Technology": "ShadowMap"
       },
       "Skybox": {
-        "$path": "assets/Skybox.rbxm"
+        "$path": "Assets/Skybox.rbxm"
       }
     },
     "SoundService": {
