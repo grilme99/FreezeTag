@@ -1,4 +1,4 @@
-type Array<T> = {T}
+type Array<T> = { T }
 
 local RandomUtils = {}
 
