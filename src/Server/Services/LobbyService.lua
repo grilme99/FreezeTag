@@ -38,7 +38,7 @@ function LobbyService.GetSpawnLocation(): Vector3
 end
 
 function LobbyService.GetChosenMap(): MapName
-	return MapName.Hill
+	return MapName.Cuba
 end
 
 return LobbyService

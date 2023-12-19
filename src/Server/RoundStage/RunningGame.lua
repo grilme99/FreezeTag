@@ -1,9 +1,12 @@
 local CollectionService = game:GetService("CollectionService")
+local Players = game:GetService("Players")
+local ServerStorage = game:GetService("ServerStorage")
 local Workspace = game:GetService("Workspace")
 
 local Log = require("@Packages/Log").new()
 
 local LobbyService = require("@Services/LobbyService")
+local TeamService = require("@Services/TeamService")
 
 local Duration = require("@Utils/Duration")
 local RandomUtils = require("@Utils/RandomUtils")
@@ -26,6 +29,40 @@ RunningGame.__index = RunningGame
 
 local GameRng = Random.new()
 
+local function assignPlayerTeams()
+	local shuffledPlayers = RandomUtils.ShuffleArray(Players:GetPlayers(), GameRng)
+
+	local taggerCount = 1 -- math.ceil(#shuffledPlayers / 4)
+	local taggers = table.create(taggerCount)
+	for i = 1, taggerCount do
+		taggers[i] = shuffledPlayers[i]
+	end
+
+	local runners = table.create(#shuffledPlayers - taggerCount)
+	for i = 1, #runners do
+		runners[i] = shuffledPlayers[i + taggerCount]
+	end
+
+	return taggers, runners
+end
+
+local function getFilteredSpawns(tag: string, mapObj: Instance)
+	local spawns = CollectionService:GetTagged(tag)
+
+	local filteredSpawns = {}
+	for _, spawnPart in ipairs(spawns) do
+		if spawnPart:IsDescendantOf(mapObj) then
+			table.insert(filteredSpawns, spawnPart)
+		end
+	end
+
+	if #filteredSpawns == 0 then
+		error(`Attempted to get match spawn location, but no parts have the {tag} tag`)
+	end
+
+	return filteredSpawns
+end
+
 function RunningGame.new(transition: Transition)
 	local self = setmetatable({}, RunningGame)
 
@@ -35,6 +72,19 @@ function RunningGame.new(transition: Transition)
 	self.roundName = "running_game"
 	self.debugName = "Running Game"
 
+	TeamService.InitTeams()
+
+	local taggers, runners = assignPlayerTeams()
+	for _, tagger in taggers do
+		TeamService.SetPlayerTeam(tagger, "Tagger")
+	end
+	for _, runner in runners do
+		TeamService.SetPlayerTeam(runner, "Runner")
+	end
+
+	self.taggers = taggers
+	self.runners = runners
+
 	local chosenMap: MapName = LobbyService.GetChosenMap()
 	local mapData = assert(MapMeta[chosenMap], `Map data for map "{chosenMap}" not found`)
 
@@ -42,27 +92,14 @@ function RunningGame.new(transition: Transition)
 	-- clients. This means that the map instance can be modified in-place, which
 	-- is a risk. Any changes made to the map during a round will persist into
 	-- the later rounds.
-	self.mapObj = mapData.mapRef
-	self.mapObjOriginalParent = self.mapObj.Parent
+	self.mapObj = assert(ServerStorage.Assets.Maps:FindFirstChild(mapData.mapName), `Map "{mapData.mapName}" not found`)
 
 	self.mapObj.Parent = workspace
 
 	-- Cache match spawns now so that we don't have to make expensive queries
 	-- every player spawn.
-	local matchSpawns = CollectionService:GetTagged(Tags.MatchSpawn)
-	if #matchSpawns == 0 then
-		error("Attempted to get match spawn location, but no parts in Workspace have the MatchSpawn tag.")
-	end
-
-	-- Filter `matchSpawns` to only include spawns for our chosen map
-	local ourMatchSpawns = {}
-	for _, spawnPart in ipairs(matchSpawns) do
-		if spawnPart:IsDescendantOf(self.mapObj) then
-			table.insert(ourMatchSpawns, spawnPart)
-		end
-	end
-
-	self.matchSpawns = ourMatchSpawns
+	self.runnerSpawns = getFilteredSpawns(Tags.RunnerSpawn, self.mapObj)
+	self.taggerSpawns = getFilteredSpawns(Tags.TaggerSpawn, self.mapObj)
 
 	Workspace:SetAttribute("RoundName", self.roundName)
 	Workspace:SetAttribute("RoundStage", self.debugName)
@@ -85,8 +122,11 @@ function RunningGame.OnTick(self: RunningGame)
 	self.transition("Intermission")
 end
 
-function RunningGame.GetSpawnLocation(self: RunningGame, _player: Player)
-	local spawnPart = RandomUtils.RandomInArray(self.matchSpawns, GameRng)
+function RunningGame.GetSpawnLocation(self: RunningGame, player: Player)
+	local role = TeamService.GetPlayerTeam(player)
+	local spawnGroup = if role == "Tagger" then self.taggerSpawns else self.runnerSpawns
+
+	local spawnPart = RandomUtils.RandomInArray(spawnGroup, GameRng)
 	if not spawnPart:IsA("BasePart") then
 		error("Attempted to get match spawn location, but the selected MatchSpawn object is not a BasePart.")
 	end
@@ -104,9 +144,11 @@ function RunningGame.Destroy(self: RunningGame)
 	Workspace:SetAttribute("RoundStage", nil)
 	Workspace:SetAttribute("GameEndTime", nil)
 
+	TeamService.ResetTeams()
+
 	-- Give all players a chance to teleport back to the lobby
 	task.delay(5, function()
-		self.mapObj.Parent = self.mapObjOriginalParent
+		self.mapObj.Parent = ServerStorage.Assets.Maps
 	end)
 end
 

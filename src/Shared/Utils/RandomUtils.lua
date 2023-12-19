@@ -48,4 +48,18 @@ function RandomUtils.RandomInRegion(position: CFrame, size: Vector3, rng: Random
 	return position * offset
 end
 
+function RandomUtils.ShuffleArray<T>(arr: Array<T>, rng_: Random?): Array<T>
+	local rng = rng_ or Random.new(os.time() * os.clock())
+
+	local shuffled = table.create(#arr)
+
+	for index, value in arr do
+		local randomIndex = rng:NextInteger(1, index)
+		shuffled[index] = shuffled[randomIndex]
+		shuffled[randomIndex] = value
+	end
+
+	return shuffled
+end
+
 return RandomUtils

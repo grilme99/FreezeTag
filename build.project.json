@@ -19,9 +19,6 @@
         "$className": "Folder",
         "Models": {
           "$path": "Assets/Models"
-        },
-        "Maps": {
-          "$path": "Assets/Maps"
         }
       }
     },
@@ -36,6 +33,12 @@
       },
       "Server": {
         "$path": "out/Server"
+      },
+      "Assets": {
+        "$className": "Folder",
+        "Maps": {
+          "$path": "Assets/Maps"
+        }
       },
       "TagList": {
         "$path": "Assets/TagList.rbxm"
@@ -77,9 +80,6 @@
         ],
         "ShadowSoftness": 0.3,
         "Technology": "ShadowMap"
-      },
-      "Skybox": {
-        "$path": "Assets/Skybox.rbxm"
       }
     },
     "SoundService": {

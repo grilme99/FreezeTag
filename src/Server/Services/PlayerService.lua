@@ -23,17 +23,17 @@ local function OnPlayerAdded(player: Player)
 	local freezeTagPlayer = FreezeTagPlayer.new(player)
 	PlayerClasses[player] = freezeTagPlayer
 
-	-- Start the loop that loads the player's character and handles respawning
-	-- when the character dies.
 	local function loadCharacter()
-		local character = freezeTagPlayer:LoadCharacterAsync({
+		freezeTagPlayer:LoadCharacterAsync({
 			-- The character will always be spawned in the lobby during this
 			-- loop, since the player has just joined the game or has just died.
 			destination = "lobby",
 		})
+	end
+	task.delay(1, loadCharacter)
 
-		local model = character.characterModel
-		local humanoid = model:WaitForChild("Humanoid")
+	local function onCharacterAdded(character: Model)
+		local humanoid = character:WaitForChild("Humanoid")
 
 		if humanoid and humanoid:IsA("Humanoid") then
 			humanoid.Died:Connect(function()
@@ -48,11 +48,11 @@ local function OnPlayerAdded(player: Player)
 				end)
 			end)
 		else
-			Log:AtWarning():Log(`Character model {model.Name} does not have a Humanoid instance.`)
+			Log:AtWarning():Log(`Character model {character.Name} does not have a Humanoid instance.`)
 		end
 	end
 
-	task.spawn(loadCharacter)
+	player.CharacterAdded:Connect(onCharacterAdded)
 
 	if PermissionService.IsPlayerDeveloper(player) then
 		player:SetAttribute("IsDeveloper", true)
