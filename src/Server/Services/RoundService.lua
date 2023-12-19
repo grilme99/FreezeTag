@@ -33,6 +33,7 @@ function RoundService.TransitionStage(newRoundClass: "Intermission" | "RunningGa
 		RoundService.CurrentRoundStage:Destroy()
 	end
 
+	RoundService.OnRoundStageChanged:Fire(newRoundClass)
 	RoundService.CurrentRoundStage = newRound
 end
 

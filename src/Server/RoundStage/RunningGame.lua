@@ -45,6 +45,23 @@ function RunningGame.new(transition: Transition)
 
 	self.mapObj.Parent = workspace
 
+	-- Cache match spawns now so that we don't have to make expensive queries
+	-- every player spawn.
+	local matchSpawns = CollectionService:GetTagged(Tags.MatchSpawn)
+	if #matchSpawns == 0 then
+		error("Attempted to get match spawn location, but no parts in Workspace have the MatchSpawn tag.")
+	end
+
+	-- Filter `matchSpawns` to only include spawns for our chosen map
+	local ourMatchSpawns = {}
+	for _, spawnPart in ipairs(matchSpawns) do
+		if spawnPart:IsDescendantOf(self.mapObj) then
+			table.insert(ourMatchSpawns, spawnPart)
+		end
+	end
+
+	self.matchSpawns = ourMatchSpawns
+
 	Workspace:SetAttribute("RoundName", self.roundName)
 	Workspace:SetAttribute("RoundStage", self.debugName)
 	Workspace:SetAttribute("GameEndTime", self.startedAt + GAME_LENGTH:asSecs())
@@ -66,13 +83,8 @@ function RunningGame.OnTick(self: RunningGame)
 	self.transition("Intermission")
 end
 
-function RunningGame.GetSpawnLocation(_self: RunningGame, _player: Player)
-	local matchSpawns = CollectionService:GetTagged(Tags.MatchSpawn)
-	if #matchSpawns == 0 then
-		error("Attempted to get match spawn location, but no parts in Workspace have the MatchSpawn tag.")
-	end
-
-	local spawnPart = RandomUtils.RandomInArray(matchSpawns, GameRng)
+function RunningGame.GetSpawnLocation(self: RunningGame, _player: Player)
+	local spawnPart = RandomUtils.RandomInArray(self.matchSpawns, GameRng)
 	if not spawnPart:IsA("BasePart") then
 		error("Attempted to get match spawn location, but the selected MatchSpawn object is not a BasePart.")
 	end
