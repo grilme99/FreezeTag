@@ -3,6 +3,8 @@ local Workspace = game:GetService("Workspace")
 
 local Log = require("@Packages/Log").new()
 
+local LobbyService = require("@Services/LobbyService")
+
 local Duration = require("@Utils/Duration")
 local RandomUtils = require("@Utils/RandomUtils")
 
@@ -33,7 +35,7 @@ function RunningGame.new(transition: Transition)
 	self.roundName = "running_game"
 	self.debugName = "Running Game"
 
-	local chosenMap: MapName = assert(Workspace:GetAttribute("ChosenMap"), "ChosenMap attribute not set")
+	local chosenMap: MapName = LobbyService.GetChosenMap()
 	local mapData = assert(MapMeta[chosenMap], `Map data for map "{chosenMap}" not found`)
 
 	-- Note: We don't clone the map instance to save memory on the server and

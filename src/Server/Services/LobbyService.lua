@@ -2,8 +2,10 @@ local CollectionService = game:GetService("CollectionService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = game:GetService("Workspace")
 
+local MapName = require("@Enums/MapName")
 local RandomUtils = require("@Utils/RandomUtils")
 local Tags = require("@Enums/Tags")
+type MapName = MapName.MapName
 
 local LobbyTemplate = ReplicatedStorage.Assets.Models.Lobby
 
@@ -33,6 +35,10 @@ function LobbyService.GetSpawnLocation(): Vector3
 	local spawnPosition = spawnPart.Position + Vector3.new(0, 10, 0)
 
 	return spawnPosition
+end
+
+function LobbyService.GetChosenMap(): MapName
+	return MapName.Hill
 end
 
 return LobbyService

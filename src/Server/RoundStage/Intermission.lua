@@ -5,7 +5,6 @@ local Log = require("@Packages/Log").new()
 local LobbyService = require("@Services/LobbyService")
 
 local Duration = require("@Shared/Utils/Duration")
-local MapName = require("@Enums/MapName")
 
 local Types = require("./Types")
 type RoundStageStatics = Types.RoundStageStatics
@@ -44,9 +43,6 @@ function Intermission.OnTick(self: Intermission)
 	end
 
 	Log:AtInfo():Log("Intermission over, transitioning to next round")
-
-	local chosenMap = MapName.Hill
-	workspace:SetAttribute("ChosenMap", chosenMap)
 
 	self.transition("RunningGame")
 end
