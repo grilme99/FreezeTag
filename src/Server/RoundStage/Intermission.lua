@@ -12,7 +12,7 @@ type RoundStageStatics = Types.RoundStageStatics
 type RoundStage = Types.RoundStage
 type Transition = Types.Transition
 
-local INTERMISSION_LENGTH = Duration.fromSecs(45)
+local INTERMISSION_LENGTH = Duration.fromSecs(10)
 
 local Intermission = {}
 Intermission.__index = Intermission
@@ -45,7 +45,7 @@ function Intermission.OnTick(self: Intermission)
 
 	Log:AtInfo():Log("Intermission over, transitioning to next round")
 
-	local chosenMap = MapName.Crossroads
+	local chosenMap = MapName.Hill
 	workspace:SetAttribute("ChosenMap", chosenMap)
 
 	self.transition("RunningGame")

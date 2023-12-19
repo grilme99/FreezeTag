@@ -62,14 +62,24 @@
     "Lighting": {
       "$properties": {
         "Ambient": [
-          0,
-          0,
-          0
+          0.3,
+          0.3,
+          0.3
         ],
         "Brightness": 2,
+        "EnvironmentDiffuseScale": 1,
+        "EnvironmentSpecularScale": 1,
         "GlobalShadows": true,
-        "Outlines": false,
-        "Technology": "Voxel"
+        "OutdoorAmbient": [
+          0.47,
+          0.53,
+          0.61
+        ],
+        "ShadowSoftness": 0.3,
+        "Technology": "ShadowMap"
+      },
+      "Skybox": {
+        "$path": "assets/Skybox.rbxm"
       }
     },
     "SoundService": {

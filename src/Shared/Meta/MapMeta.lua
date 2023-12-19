@@ -21,10 +21,22 @@ type Map<K, V> = { [K]: V }
 
 local MapMeta: Map<MapName, MapEntry> = {}
 
-MapMeta[MapName.Crossroads] = {
-	mapName = "crossroads",
-	debugName = "Crossroads",
-	mapRef = Maps.Crossroads,
+MapMeta[MapName.Castle] = {
+	mapName = "castle",
+	debugName = "Castle",
+	mapRef = Maps.Castle,
+}
+
+MapMeta[MapName.Hill] = {
+	mapName = "hill",
+	debugName = "Hill",
+	mapRef = Maps.Hill,
+}
+
+MapMeta[MapName.Temple] = {
+	mapName = "temple",
+	debugName = "Temple",
+	mapRef = Maps.Temple,
 }
 
 return MapMeta

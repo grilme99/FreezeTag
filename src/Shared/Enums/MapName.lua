@@ -1,8 +1,10 @@
-export type MapName = "Crossroads"
+export type MapName = "Castle" | "Hill" | "Temple"
 
 --- List of defined map names.
 local MapName = table.freeze({
-	Crossroads = "Crossroads" :: MapName,
+	Castle = "Castle" :: MapName,
+	Hill = "Hill" :: MapName,
+	Temple = "Temple" :: MapName,
 })
 
 return MapName
