@@ -11,6 +11,7 @@ build: process
     rojo build build.project.json --output FreezeTag.rbxl
 
 process: sourcemap
+    just generate-netcode
     rm -rf out/*
     darklua process --config darklua.json src/ out/
 
@@ -23,6 +24,11 @@ install-packages:
     wally-package-types --sourcemap sourcemap.json DevPackages/
 
     echo "local REQUIRED_MODULE = require(script.Parent.Parent[\"jsdotlua_jest-message-util@3.4.1\"][\"jest-message-util\"])\nreturn REQUIRED_MODULE" > DevPackages/_Index/jsdotlua_jest-reporters@3.4.1/JestMessageUtil.lua
+
+generate-netcode:
+    zap src/Networking.cfg
+    stylua src/Client/Networking.luau
+    stylua src/Server/Networking.luau
 
 analyze: process
     curl -O https://raw.githubusercontent.com/JohnnyMorganz/luau-lsp/main/scripts/globalTypes.d.lua

@@ -8,8 +8,8 @@ realm = "shared"
 shared-packages = "game.ReplicatedStorage.Packages"
 
 [dependencies]
-React = "jsdotlua/react@17.0.2"
-ReactRoblox = "jsdotlua/react-roblox@17.0.2"
+React = "jsdotlua/react@17.1.0"
+ReactRoblox = "jsdotlua/react-roblox@17.1.0"
 Sift = "csqrl/sift@0.0.8"
 Loader = "sleitnick/loader@2.0.0"
 Log = "sleitnick/log@0.1.1"
