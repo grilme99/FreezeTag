@@ -74,7 +74,7 @@ function RunningGame.new(transition: Transition)
 	self.taggersReleased = false
 
 	self.roundName = "running_game"
-	self.debugName = "Running Game"
+	self.debugName = "Freeze Tag!"
 
 	TeamService.InitTeams()
 

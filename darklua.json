@@ -23,6 +23,7 @@
                     "@Packages": "Packages/",
                     "@ServerPackages": "ServerPackages/",
                     "@DevPackages": "DevPackages/",
+                    "@Vendor": "src/Shared/Vendor/",
                     "@Client": "src/Client/",
                     "@Controllers": "src/Client/Controllers",
                     "@UI": "src/Client/UI",
