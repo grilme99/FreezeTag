@@ -106,7 +106,7 @@ function RunningGame.new(transition: Transition)
 	Workspace:SetAttribute("RoundName", self.roundName)
 	Workspace:SetAttribute("RoundStage", self.debugName)
 	Workspace:SetAttribute("TaggersReleasedAt", self.taggersReleasedAt)
-	Workspace:SetAttribute("GameEndTime", self.startedAt + GAME_LENGTH:asSecs())
+	Workspace:SetAttribute("RoundEndTime", self.startedAt + GAME_LENGTH:asSecs())
 
 	return self
 end
@@ -158,7 +158,7 @@ function RunningGame.Destroy(self: RunningGame)
 	Workspace:SetAttribute("RoundName", nil)
 	Workspace:SetAttribute("RoundStage", nil)
 	Workspace:SetAttribute("TaggersReleasedAt", nil)
-	Workspace:SetAttribute("GameEndTime", nil)
+	Workspace:SetAttribute("RoundEndTime", nil)
 
 	TeamService.ResetTeams()
 

@@ -27,7 +27,7 @@ function Intermission.new(transition: Transition)
 
 	Workspace:SetAttribute("RoundName", self.roundName)
 	Workspace:SetAttribute("RoundStage", self.debugName)
-	Workspace:SetAttribute("IntermissionEndTime", self.startedAt + INTERMISSION_LENGTH:asSecs())
+	Workspace:SetAttribute("RoundEndTime", self.startedAt + INTERMISSION_LENGTH:asSecs())
 
 	return self
 end
@@ -54,7 +54,7 @@ end
 function Intermission.Destroy(_self: Intermission)
 	Workspace:SetAttribute("RoundName", nil)
 	Workspace:SetAttribute("RoundStage", nil)
-	Workspace:SetAttribute("IntermissionEndTime", nil)
+	Workspace:SetAttribute("RoundEndTime", nil)
 end
 
 return (Intermission :: any) :: RoundStageStatics

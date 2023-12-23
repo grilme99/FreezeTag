@@ -21,7 +21,7 @@ function UIController.OnStart()
 
 	local element = if DEV
 		then e(React.StrictMode, {}, {
-			e(UIRoot, {}),
+			UIRoot = e(UIRoot, {}),
 		})
 		else e(UIRoot, {})
 
