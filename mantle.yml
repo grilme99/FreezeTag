@@ -1,0 +1,33 @@
+environments:
+  - label: staging
+    targetNamePrefix:
+      custom: "[STAGING] "
+  - label: production
+    branches: [main]
+    targetAccess: public
+
+target:
+  experience:
+    configuration:
+      genre: "fighting"
+      playability: "private"
+      enableStudioAccessToApis: false
+      allowThirdPartySales: false
+      allowThirdPartyTeleports: false
+      avatarType: "r15"
+      privateServers: "free"
+    socialLinks:
+      - title: Follow on Twitter
+        url: https://twitter.com/grilme99
+    spatialVoice:
+      enabled: true
+    notifications:
+      customInvitePrompt:
+        content: "{displayName} is inviting you to join {experienceName}!"
+    places:
+      start:
+        file: FreezeTag.rbxl
+        configuration:
+          name: "Freeze Tag!"
+          description: "WIP game"
+          maxPlayerCount: 16

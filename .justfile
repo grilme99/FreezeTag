@@ -10,6 +10,14 @@ serve:
 build: process
     rojo build build.project.json --output FreezeTag.rbxl
 
+deploy-staging: build
+    mantle deploy -e staging
+    mantle outputs -o src/Shared/MantleOutputs.json
+
+deploy-production: build
+    mantle deploy -e production
+    mantle outputs -o src/Shared/MantleOutputs.json
+
 process: sourcemap
     just generate-netcode
     rm -rf out/*

@@ -1,0 +1,32 @@
+{
+  "experienceActivation_singleton": "experienceActivation",
+  "experienceConfiguration_singleton": "experienceConfiguration",
+  "experience_singleton": {
+    "experience": {
+      "assetId": 5433583350,
+      "startPlaceId": 15726524490
+    }
+  },
+  "notification_customInvitePrompt": {
+    "notification": {
+      "id": "4913271b-e844-4341-aa88-a45b8cf5ad5f"
+    }
+  },
+  "placeConfiguration_start": "placeConfiguration",
+  "placeFile_start": {
+    "placeFile": {
+      "version": 2
+    }
+  },
+  "place_start": {
+    "place": {
+      "assetId": 15726524490
+    }
+  },
+  "socialLink_twitter.com": {
+    "socialLink": {
+      "assetId": 11213512
+    }
+  },
+  "spatialVoice_singleton": "spatialVoice"
+}
