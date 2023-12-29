@@ -1,19 +1,20 @@
 local Players = game:GetService("Players")
 
 local Log = require("@Packages/Log").new()
-local Signal = require("@Packages/Signal")
 
 local PermissionService = require("@Services/PermissionService")
-local RoundService = require("@Services/RoundService")
+
+local ServerSignals = require("@Server/ServerSignals")
 
 local FreezeTagPlayer = require("@Server/Classes/Player")
 export type FreezeTagPlayer = FreezeTagPlayer.FreezeTagPlayer
+local Character = require("@Server/Classes/Character")
+export type Character = Character.Character
 
 type Array<T> = { T }
 type Map<K, V> = { [K]: V }
 
 local PlayerService = {}
-PlayerService.OnPlayerAdded = Signal.new() :: Signal.Signal<FreezeTagPlayer>
 
 local PlayerClasses = {} :: Map<Player, FreezeTagPlayer>
 
@@ -62,7 +63,7 @@ local function OnPlayerAdded(player: Player)
 		player:SetAttribute("IsDeveloper", true)
 	end
 
-	PlayerService.OnPlayerAdded:Fire(freezeTagPlayer)
+	ServerSignals.OnPlayerAdded:Fire(freezeTagPlayer)
 end
 
 local function OnPlayerRemoving(player: Player)
@@ -81,7 +82,7 @@ end
 
 function PlayerService.OnStart()
 	-- Respawn players when the round stage changes
-	RoundService.OnRoundStageChanged:Connect(function(newRoundStage)
+	ServerSignals.OnRoundStageChanged:Connect(function(newRoundStage)
 		task.wait(1)
 
 		for _, playerClass in pairs(PlayerClasses) do

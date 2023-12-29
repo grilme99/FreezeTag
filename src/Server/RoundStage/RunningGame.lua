@@ -8,6 +8,8 @@ local Log = require("@Packages/Log").new()
 local LobbyService = require("@Services/LobbyService")
 local TeamService = require("@Services/TeamService")
 
+local ServerSignals = require("@Server/ServerSignals")
+
 local Duration = require("@Utils/Duration")
 local RandomUtils = require("@Utils/RandomUtils")
 
@@ -103,6 +105,17 @@ function RunningGame.new(transition: Transition)
 	self.runnerSpawns = getFilteredSpawns(Tags.RunnerSpawn, self.mapObj)
 	self.taggerSpawns = getFilteredSpawns(Tags.TaggerSpawn, self.mapObj)
 
+	-- Update player characters based on their teams on spawn.
+	self.characterAddedConnection = ServerSignals.OnCharacterAdded:Connect(function(player, character)
+		local team = TeamService.GetPlayerTeam(player.player)
+
+		if team == "Tagger" then
+			character:AddWalkSpeedMultiplier("TaggerWalkSpeed", 2)
+		elseif team == "Runner" then
+			character:AddWalkSpeedMultiplier("RunnerWalkSpeed", 1.8)
+		end
+	end)
+
 	Workspace:SetAttribute("RoundName", self.roundName)
 	Workspace:SetAttribute("RoundStage", self.debugName)
 	Workspace:SetAttribute("TaggersReleasedAt", self.taggersReleasedAt)
@@ -159,6 +172,8 @@ function RunningGame.Destroy(self: RunningGame)
 	Workspace:SetAttribute("RoundStage", nil)
 	Workspace:SetAttribute("TaggersReleasedAt", nil)
 	Workspace:SetAttribute("RoundEndTime", nil)
+
+	self.characterAddedConnection:Disconnect()
 
 	TeamService.ResetTeams()
 

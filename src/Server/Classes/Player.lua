@@ -1,8 +1,10 @@
 local Character = require("./Character")
 type Character = Character.Character
 
-local LobbyService
-local RoundService
+local LobbyService = require("@Services/LobbyService")
+local RoundService = require("@Services/RoundService")
+
+local ServerSignals = require("@Server/ServerSignals")
 
 local DEFAULT_CHARACTER_HEIGHT = 5
 
@@ -16,15 +18,6 @@ function FreezeTagPlayer.new(player: Player)
 	self.character = nil :: Character?
 
 	self.currentCharacterLocation = nil :: "lobby" | "game" | nil
-
-	-- Note: We don't load the services at the top of the file because it would
-	-- create a circular dependency.
-	if LobbyService == nil then
-		LobbyService = require("@Services/LobbyService")
-	end
-	if RoundService == nil then
-		RoundService = require("@Services/RoundService")
-	end
 
 	return self
 end
@@ -73,6 +66,8 @@ function FreezeTagPlayer.LoadCharacterAsync(self: FreezeTagPlayer, options: Load
 
 	self.character = character
 	self.currentCharacterLocation = options.destination
+
+	ServerSignals.OnCharacterAdded:Fire(self, character)
 
 	local connection
 	connection = character.destroying:Connect(function()

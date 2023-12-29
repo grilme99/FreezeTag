@@ -6,6 +6,8 @@ type Signal<T...> = Signal.Signal<T...>
 
 local LobbyService = require("@Services/LobbyService")
 
+local ServerSignals = require("@Server/ServerSignals")
+
 local Intermission = require("@Server/RoundStage/Intermission")
 local RunningGame = require("@Server/RoundStage/RunningGame")
 
@@ -15,7 +17,6 @@ type RoundStage = RoundStageTypes.RoundStage
 
 local RoundService = {}
 RoundService.CurrentRoundStage = nil :: RoundStage?
-RoundService.OnRoundStageChanged = Signal.new() :: Signal<"Intermission" | "RunningGame">
 
 function RoundService.OnStart()
 	RunService.Heartbeat:Connect(RoundService.Tick)
@@ -33,7 +34,7 @@ function RoundService.TransitionStage(newRoundClass: "Intermission" | "RunningGa
 
 	Log:AtInfo():Log(`Transitioning to new round stage: {newRound.debugName}`)
 
-	RoundService.OnRoundStageChanged:Fire(newRoundClass)
+	ServerSignals.OnRoundStageChanged:Fire(newRoundClass)
 	RoundService.CurrentRoundStage = newRound
 end
 
