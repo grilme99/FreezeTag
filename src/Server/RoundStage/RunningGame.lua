@@ -35,14 +35,15 @@ local GameRng = Random.new()
 local function assignPlayerTeams()
 	local shuffledPlayers = RandomUtils.ShuffleArray(Players:GetPlayers(), GameRng)
 
-	local taggerCount = 1 -- math.ceil(#shuffledPlayers / 4)
+	local taggerCount = 0 -- math.ceil(#shuffledPlayers / 4)
 	local taggers = table.create(taggerCount)
 	for i = 1, taggerCount do
 		taggers[i] = shuffledPlayers[i]
 	end
 
-	local runners = table.create(#shuffledPlayers - taggerCount)
-	for i = 1, #runners do
+	local runnersCount = #shuffledPlayers - taggerCount
+	local runners = table.create(runnersCount)
+	for i = 1, runnersCount do
 		runners[i] = shuffledPlayers[i + taggerCount]
 	end
 
