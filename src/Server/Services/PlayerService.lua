@@ -24,13 +24,17 @@ local function OnPlayerAdded(player: Player)
 	PlayerClasses[player] = freezeTagPlayer
 
 	local function loadCharacter()
+		if freezeTagPlayer.character then
+			return
+		end
+
 		freezeTagPlayer:LoadCharacterAsync({
 			-- The character will always be spawned in the lobby during this
 			-- loop, since the player has just joined the game or has just died.
 			destination = "lobby",
 		})
 	end
-	task.delay(1, loadCharacter)
+	task.delay(2, loadCharacter)
 
 	local function onCharacterAdded(character: Model)
 		local humanoid = character:WaitForChild("Humanoid")
