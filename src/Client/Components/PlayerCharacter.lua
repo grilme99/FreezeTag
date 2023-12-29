@@ -1,5 +1,6 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
 
 local Component = require("@Packages/Component")
 local Log = require("@Packages/Log").new()
@@ -50,7 +51,7 @@ function PlayerCharacter:Construct()
 			local iceBlock = IceCubeTemplate:Clone()
 			iceBlock.CFrame = characterCf
 			iceBlock.Anchored = true
-			iceBlock.Parent = character
+			iceBlock.Parent = Workspace.Terrain
 
 			self.iceBlock = iceBlock
 		elseif not isFrozen and self.iceBlock then
