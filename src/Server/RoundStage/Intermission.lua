@@ -11,7 +11,7 @@ type RoundStageStatics = Types.RoundStageStatics
 type RoundStage = Types.RoundStage
 type Transition = Types.Transition
 
-local INTERMISSION_LENGTH = Duration.fromSecs(45)
+local INTERMISSION_LENGTH = Duration.fromSecs(20)
 
 local Intermission = {}
 Intermission.__index = Intermission

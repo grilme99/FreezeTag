@@ -1,4 +1,4 @@
-export type Tag = "LobbySpawn" | "RunnerSpawn" | "TaggerSpawn" | "PlayerCharacter"
+export type Tag = "LobbySpawn" | "RunnerSpawn" | "TaggerSpawn" | "PlayerCharacter" | "DebugPart"
 
 --- List of defined CollectionService tags.
 local Tags = table.freeze({
@@ -7,6 +7,8 @@ local Tags = table.freeze({
 	TaggerSpawn = "TaggerSpawn" :: Tag,
 
 	PlayerCharacter = "PlayerCharacter" :: Tag,
+
+	DebugPart = "DebugPart" :: Tag,
 })
 
 return Tags
