@@ -19,7 +19,6 @@ deploy-production: build
     mantle outputs -o src/Shared/MantleOutputs.json
 
 process: sourcemap
-    just generate-netcode
     rm -rf out/*
     darklua process --config darklua.json src/ out/
 
@@ -33,10 +32,7 @@ install-packages:
 
     echo "local REQUIRED_MODULE = require(script.Parent.Parent[\"jsdotlua_jest-message-util@3.4.1\"][\"jest-message-util\"])\nreturn REQUIRED_MODULE" > DevPackages/_Index/jsdotlua_jest-reporters@3.4.1/JestMessageUtil.lua
 
-generate-netcode:
-    zap src/Networking.cfg
-    stylua src/Client/Networking.luau
-    stylua src/Server/Networking.luau
+    echo "{ \"languageMode\": \"nonstrict\" }" > Packages/_Index/osyrisrblx_t@3.0.0/.luaurc
 
 analyze: process
     curl -O https://raw.githubusercontent.com/JohnnyMorganz/luau-lsp/main/scripts/globalTypes.d.lua

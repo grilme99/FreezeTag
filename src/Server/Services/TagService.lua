@@ -1,33 +1,49 @@
+local BridgeNet = require("@Packages/BridgeNet")
+local Log = require("@Packages/Log").new()
+local t = require("@Packages/t")
+
 local PlayerService = require("@Services/PlayerService")
 local TeamService = require("@Services/TeamService")
 
-local Networking = require("@Server/Networking")
+local TagNetworking = BridgeNet.ServerBridge("TagNetworking")
 
 local function validatePlayerIsTagger(player: Player)
 	return TeamService.GetPlayerTeam(player) == "Tagger"
 end
 
+local function validatePlayerIsRunner(player: Player)
+	return TeamService.GetPlayerTeam(player) == "Runner"
+end
+
 local TagService = {}
 
 function TagService.OnInit()
-	Networking.TagPlayer.SetCallback(function(tagger, target)
-		if not validatePlayerIsTagger(tagger) then
+	TagNetworking:Connect(function(player, message: any)
+		local validator = t.strictInterface({
+			action = t.union(t.literal("Tag"), t.literal("Untag")),
+			targetPlayer = t.instanceIsA("Player"),
+		})
+
+		if not validator(message) then
+			Log:AtWarning():Log(`Invalid message received from {player.Name}: {message}`)
+			return
+		end
+
+		if message.action == "Tag" and not validatePlayerIsTagger(player) then
+			Log:AtWarning():Log(`{player.Name} attempted to tag {message.targetPlayer.Name} but is not a tagger`)
+			return
+		elseif message.action == "Untag" and not validatePlayerIsRunner(player) then
+			Log:AtWarning():Log(`{player.Name} attempted to untag {message.targetPlayer.Name} but is not a runner`)
 			return
 		end
 
 		-- TODO: Introduce character validation, this is wide open for exploits right now (#1).
 
-		TagService.TagPlayer(target)
-	end)
-
-	Networking.UntagPlayer.SetCallback(function(tagger, target)
-		if not validatePlayerIsTagger(tagger) then
-			return
+		if message.action == "Tag" then
+			TagService.TagPlayer(message.targetPlayer)
+		else
+			TagService.UntagPlayer(message.targetPlayer)
 		end
-
-		-- TODO: Introduce character validation, this is wide open for exploits right now (#1).
-
-		TagService.UntagPlayer(target)
 	end)
 end
 

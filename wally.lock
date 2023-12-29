@@ -5,7 +5,7 @@ registry = "test"
 [[package]]
 name = "brooke/freeze-tag"
 version = "0.1.0"
-dependencies = [["Component", "sleitnick/component@2.4.8"], ["Loader", "sleitnick/loader@2.0.0"], ["Log", "sleitnick/log@0.1.1"], ["LuauPolyfill", "jsdotlua/luau-polyfill@1.2.6"], ["React", "jsdotlua/react@17.1.0"], ["ReactRoblox", "jsdotlua/react-roblox@17.1.0"], ["Sift", "csqrl/sift@0.0.8"], ["Signal", "sleitnick/signal@2.0.1"], ["Trove", "sleitnick/trove@1.1.0"], ["Cmdr", "evaera/cmdr@1.12.0"], ["Jest", "jsdotlua/jest@3.4.1"], ["JestGlobals", "jsdotlua/jest-globals@3.4.1"]]
+dependencies = [["BridgeNet", "ffrostflame/bridgenet2@1.0.0"], ["Component", "sleitnick/component@2.4.8"], ["ImGizmo", "grilme99/imgizmo@3.2.2"], ["Loader", "sleitnick/loader@2.0.0"], ["Log", "sleitnick/log@0.1.1"], ["LuauPolyfill", "jsdotlua/luau-polyfill@1.2.6"], ["React", "jsdotlua/react@17.1.0"], ["ReactRoblox", "jsdotlua/react-roblox@17.1.0"], ["Sift", "csqrl/sift@0.0.8"], ["Signal", "sleitnick/signal@2.0.1"], ["Trove", "sleitnick/trove@1.1.0"], ["t", "osyrisrblx/t@3.0.0"], ["Cmdr", "evaera/cmdr@1.12.0"], ["Jest", "jsdotlua/jest@3.4.1"], ["JestGlobals", "jsdotlua/jest-globals@3.4.1"]]
 
 [[package]]
 name = "csqrl/sift"
@@ -20,6 +20,26 @@ dependencies = []
 [[package]]
 name = "evaera/promise"
 version = "4.0.0"
+dependencies = []
+
+[[package]]
+name = "ffrostflame/bridgenet2"
+version = "1.0.0"
+dependencies = [["RemotePacketSizeCounter", "pysephwasntavailable/remotepacketsizecounter@2.4.1"], ["TableKit", "ffrostflame/tablekit@0.2.4"], ["wallyInstanceManager", "ffrostflame/wally-instance-manager@0.1.0"]]
+
+[[package]]
+name = "ffrostflame/tablekit"
+version = "0.2.4"
+dependencies = []
+
+[[package]]
+name = "ffrostflame/wally-instance-manager"
+version = "0.1.0"
+dependencies = []
+
+[[package]]
+name = "grilme99/imgizmo"
+version = "3.2.2"
 dependencies = []
 
 [[package]]
@@ -281,6 +301,16 @@ dependencies = [["LuauPolyfill", "jsdotlua/luau-polyfill@1.2.6"], ["Promise", "e
 name = "jsdotlua/timers"
 version = "1.2.6"
 dependencies = [["collections", "jsdotlua/collections@1.2.6"]]
+
+[[package]]
+name = "osyrisrblx/t"
+version = "3.0.0"
+dependencies = []
+
+[[package]]
+name = "pysephwasntavailable/remotepacketsizecounter"
+version = "2.4.1"
+dependencies = []
 
 [[package]]
 name = "sleitnick/component"
